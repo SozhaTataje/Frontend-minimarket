@@ -1,4 +1,3 @@
-// Versión mejorada de Carrito.jsx sin lógica de stock en incremento
 import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -97,21 +96,23 @@ const Carrito = () => {
       const idPedido = data.idpedido;
 
       const pagoResponse = await fetch(
-        `http://localhost:3600/pago?idpedido=${idPedido}`,
+        `http://localhost:3600/pago/url/${idPedido}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
-
+      console.log(pagoResponse);
       if (!pagoResponse.ok) {
         const texto = await pagoResponse.text();
         console.error("Respuesta de pago fallida:", texto);
         throw new Error("Error al obtener URL de Stripe");
       }
 
-      const urlPago = await pagoResponse.text();
+      const urlPago = await pagoResponse.json().then((data) => data);
 
-      if (!urlPago.startsWith("http")) {
+      if (!urlPago.startsWith("https")) {
         console.error("URL recibida no válida:", urlPago);
         throw new Error("URL inválida de Stripe");
       }
@@ -204,11 +205,10 @@ const Carrito = () => {
             <button
               onClick={handleFinalizar}
               disabled={procesando}
-              className={`${
-                procesando
+              className={`${procesando
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-purple-600 hover:bg-purple-700"
-              } text-white font-bold py-3 px-8 rounded-full shadow-lg transition`}
+                } text-white font-bold py-3 px-8 rounded-full shadow-lg transition`}
             >
               {procesando ? "Procesando..." : "Finalizar compra"}
             </button>
