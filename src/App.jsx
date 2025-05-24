@@ -14,8 +14,8 @@ import AdminLayout from "./layouts/AdminLayout";
 
 // Páginas públicas
 import Home from "./pages/Home";
-import Products from "./pages/Products"; 
-import ProductList from "./components/ProductList"; 
+import Products from "./pages/Products";
+import ProductList from "./components/ProductList";
 import Carrito from "./pages/Carrito";
 import Sucursales from "./pages/Sucursales";
 import Login from "./components/Login";
@@ -29,7 +29,7 @@ import Productos from "./pages/admin/Productos";
 import SucursalesAdmin from "./pages/admin/Sucursales";
 import Usuarios from "./pages/admin/Usuarios";
 
-// Ruta privada para proteger rutas admin
+// Ruta protegida según el rol del usuario
 function RutaPrivada({ children, rolRequerido }) {
   const { usuario } = useAuth();
 
@@ -41,14 +41,18 @@ function RutaPrivada({ children, rolRequerido }) {
     ? [usuario.rol]
     : [];
 
-  if (rolRequerido && !roles.includes(rolRequerido)) return <Navigate to="/" />;
+  if (rolRequerido && !roles.includes(rolRequerido)) {
+    return <Navigate to="/" />;
+  }
 
   return children;
 }
 
+// Layout para clientes, oculta Navbar si es ruta admin
 function ClienteLayout() {
   const location = useLocation();
   const esRutaAdmin = location.pathname.startsWith("/admin");
+
   return (
     <>
       {!esRutaAdmin && <Navbar />}
@@ -62,10 +66,9 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Rutas públicas */}
+          {/* Rutas públicas con Navbar */}
           <Route element={<ClienteLayout />}>
             <Route path="/" element={<Home />} />
-            {/* Usa solo ProductList en /productos */}
             <Route path="/productos" element={<ProductList />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/sucursales" element={<Sucursales />} />
@@ -75,7 +78,7 @@ function App() {
             <Route path="/confirmar-correo" element={<ConfirmarCorreo />} />
           </Route>
 
-          {/* Rutas privadas para admin */}
+          {/* Rutas protegidas solo para ADMIN */}
           <Route
             path="/admin"
             element={
