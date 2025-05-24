@@ -1,4 +1,3 @@
-// Versión mejorada de Carrito.jsx sin lógica de stock en incremento
 import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -82,6 +81,7 @@ const Carrito = () => {
         metodoPago: "Tarjeta de Crédito",
       };
 
+      // Guardar pedido en backend
       const response = await fetch("http://localhost:3600/pedido/save", {
         method: "POST",
         headers: {
@@ -96,6 +96,7 @@ const Carrito = () => {
       const data = await response.json();
       const idPedido = data.idpedido;
 
+      // Obtener URL de pago de Stripe
       const pagoResponse = await fetch(
         `http://localhost:3600/pago?idpedido=${idPedido}`,
         {
@@ -116,6 +117,7 @@ const Carrito = () => {
         throw new Error("URL inválida de Stripe");
       }
 
+      // Redirigir al checkout de Stripe
       window.location.href = urlPago;
     } catch (error) {
       console.error("Error al procesar la compra:", error);

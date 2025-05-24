@@ -5,21 +5,20 @@ const ProductCard = ({ productosucursal }) => {
   const { agregarAlCarrito } = useContext(CartContext);
   const [cantidad, setCantidad] = useState(1);
 
-  // Verificamos que venga correctamente
+
   if (
     !productosucursal ||
     typeof productosucursal !== "object" ||
     !productosucursal.producto ||
     !productosucursal.producto.nombre
   ) {
-    return null; // No muestra nada si está mal el dato
+    return null; 
   }
 
   const { producto, stock, idProductoSucursal } = productosucursal;
 
   const stockDisponible = stock ?? 0;
   const aumentar = () => setCantidad((c) => Math.min(c + 1, stockDisponible));
-
   const disminuir = () => setCantidad((c) => Math.max(c - 1, 1));
 
   const manejarAgregar = () => {
