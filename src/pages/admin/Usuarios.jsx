@@ -12,7 +12,7 @@ const Usuarios = () => {
   const fetchUsuarios = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/usuario/all"); // Cambia según tu ruta backend real
+      const res = await api.get("api/usuario/all"); 
       setUsuarios(res.data);
     } catch (error) {
       console.error("Error al obtener usuarios:", error);
