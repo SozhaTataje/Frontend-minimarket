@@ -8,14 +8,13 @@ const Products = () => {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
-  // Cargar sucursales al iniciar
   useEffect(() => {
     fetch("http://localhost:3600/sucursal/all?param=x")
       .then(res => res.json())
       .then(data => {
         setSucursales(data);
         if (data.length > 0) {
-          setSucursalId(data[0].idsucursal.toString()); // ← Selecciona la primera sucursal automáticamente
+          setSucursalId(data[0].idsucursal.toString()); 
         }
       })
       .catch(err => {
