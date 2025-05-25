@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
-  const [loading, setLoading] = useState(true); // nuevo estado loading
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         setUsuario({ email: decoded.email, nombre: decoded.nombre, roles });
       }
     }
-    setLoading(false); // <-- aquí agregué para que termine loading
+    setLoading(false); 
   }, []);
 
   const login = (token) => {
