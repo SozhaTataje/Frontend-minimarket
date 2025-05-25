@@ -18,7 +18,7 @@ const PedidoConfirmacion = () => {
 
         console.log("Estado del pedido:", res.data.estado);
 
-        // Vaciar carrito sólo si el pedido está COMPLETADO (ajusta mayúsculas si es necesario)
+      
         if (res.data?.estado === "COMPLETADO") {
           vaciarCarrito();
           localStorage.removeItem("carrito");
